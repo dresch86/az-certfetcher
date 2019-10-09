@@ -1,0 +1,10 @@
+[Unit]
+Description=Regularly check for new Azure App Service SSL certificates
+
+[Timer]
+OnCalendar=monthly
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target

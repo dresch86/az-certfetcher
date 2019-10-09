@@ -1,0 +1,8 @@
+[Unit]
+Description=Fetches SSL certificates from Azure Key Vault
+Requires=network.target network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/node -r esm -r dotenv/config az-certfetcher.js
+ExecStartPost=systemctl restart apache2
