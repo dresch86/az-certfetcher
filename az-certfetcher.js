@@ -28,7 +28,7 @@ async function convertPFXtoPEM() {
         let sCertificatePath = installPath + path.sep + installName + '.cert.pem';
     
         let blPrivKeyRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nocerts', '-out', sPrivateKeyPath, '-nodes', '-passin', 'pass:']);
-        let blCertificateRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nocerts', '-out', sCertificatePath, '-nodes', '-passin', 'pass:']);
+        let blCertificateRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nokeys', '-out', sCertificatePath, '-passin', 'pass:']);
     
         if (!(blPrivKeyRes instanceof Error)) {
             fs.chmod(sPrivateKeyPath, 0o0600, (err) => {
