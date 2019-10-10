@@ -11,9 +11,9 @@
   "dependencies": {
     "@azure/identity": "^1.0.0-preview.5",
     "@azure/keyvault-secrets": "^4.0.0-preview.7",
+    "await-spawn": "^3.0.0",
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
-    "fs-extra": "^8.1.0",
-    "openssl-nodejs": "^1.0.5"
+    "fs-extra": "^8.1.0"
   }
 }
