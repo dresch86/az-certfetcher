@@ -6,4 +6,4 @@ Requires=network.target network-online.target
 Type=oneshot
 WorkingDirectory=/opt/az-certfetcher
 ExecStart=/usr/bin/node -r esm -r dotenv/config az-certfetcher.js
-ExecStartPost=systemctl restart apache2
+ExecStartPost=/bin/systemctl restart apache2

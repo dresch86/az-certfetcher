@@ -15,5 +15,9 @@
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
     "fs-extra": "^8.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dresch86/az-certfetcher.git"
   }
 }
