@@ -9,9 +9,9 @@ const secretName = process.env.SECRET_NAME;
 const vaultName = process.env.KEYVAULT_NAME;
 const pthExecHome = path.resolve(__dirname);
 
-const installPath = process.env.INSTALL_PATH.trim();
-const installName = process.env.INSTALL_NAME.trim();
-const sAzurePFX = installPath + path.sep + 'azure.' + installName + '.pfx';
+var installPath = process.env.INSTALL_PATH.trim();
+var installName = process.env.INSTALL_NAME.trim();
+var sAzurePFX = installPath + path.sep + 'azure.' + installName + '.pfx';
 
 async function convertPFXtoPEM() {
     try {
