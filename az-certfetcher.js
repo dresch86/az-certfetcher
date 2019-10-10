@@ -25,7 +25,7 @@ async function convertPFXtoPEM() {
         });
 
         let sPrivateKeyPath = installPath + path.sep + installName + '.privkey.pem';
-        let sCertificatePath = installPath + path.sep + installName + '.cert.crt';
+        let sCertificatePath = installPath + path.sep + installName + '.cert.pem';
     
         let blPrivKeyRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nocerts', '-out', sPrivateKeyPath, '-nodes', '-passin', 'pass:']);
         let blCertificateRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nocerts', '-out', sCertificatePath, '-nodes', '-passin', 'pass:']);
