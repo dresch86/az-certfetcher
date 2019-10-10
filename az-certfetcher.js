@@ -15,6 +15,15 @@ const sAzurePFX = installPath + path.sep + 'azure.' + installName + '.pfx';
 
 async function convertPFXtoPEM() {
     try {
+        fs.chmod(sAzurePFX, 0o0640, (err) => {
+            if (err) {
+                console.error('SECURITY: Failed to change permissions on PFX file!');
+                return;
+            }
+    
+            console.log('SUCCESS: The permissions for file [' + sAzurePFX + '] have been changed!');
+        });
+
         let sPrivateKeyPath = installPath + path.sep + installName + '.privkey.pem';
         let sCertificatePath = installPath + path.sep + installName + '.cert.crt';
     
@@ -28,7 +37,7 @@ async function convertPFXtoPEM() {
                     return;
                 }
         
-                console.log('SUCCESS: The permissions for file ' + sPrivateKeyPath + ' have been changed!');
+                console.log('SUCCESS: The permissions for file [' + sPrivateKeyPath + '] have been changed!');
             });
         } else {
             console.log(blPrivKeyRes.stderr.toString('utf8'));
@@ -41,7 +50,7 @@ async function convertPFXtoPEM() {
                     return;
                 }
         
-                console.log('SUCCESS: The permissions for file ' + sCertificatePath + ' have been changed!');
+                console.log('SUCCESS: The permissions for file [' + sCertificatePath + '] have been changed!');
             });
         } else {
             console.log(blCertificateRes.stderr.toString('utf8'));
