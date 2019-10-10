@@ -7,7 +7,7 @@ The Azure Certificate Fetcher grabs SSL certificates from the Azure Key Vault vi
 * OpenSSL
 
 ### __Setup:__
-1. `git clone`
+1. `git clone https://github.com/dresch86/az-certfetcher.git`
 2. `cd az-certfetcher`
 1. `cp .env.sample .env`
 1. Edit `.env` to include Azure credentials and set install path / filename
@@ -15,3 +15,4 @@ The Azure Certificate Fetcher grabs SSL certificates from the Azure Key Vault vi
 1. `cp az-certfetcher.service /etc/systemd/system/az-certfetcher.service`
 1. `cp az-certfetcher.timer /etc/systemd/system/az-certfetcher.timer`
 1. `systemctl enable az-certfetcher.timer`
+1. `systemctl start az-certfetcher.timer`
