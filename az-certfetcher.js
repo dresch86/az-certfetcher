@@ -25,33 +25,55 @@ async function convertPFXtoPEM() {
         });
 
         let sPrivateKeyPath = installPath + path.sep + installName + '.privkey.pem';
-        let sCertificatePath = installPath + path.sep + installName + '.cert.pem';
+        let sCertificatePath = installPath + path.sep + installName + '.fullchain.pem';
     
-        let blPrivKeyRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-notext', '-nocerts', '-out', sPrivateKeyPath, '-nodes', '-passin', 'pass:']);
-        let blCertificateRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-notext', '-nokeys', '-out', sCertificatePath, '-passin', 'pass:']);
+        let blPrivKeyRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nocerts', '-nodes', '-passin', 'pass:']);
+        let blCertificateRes = await spawn('openssl', ['pkcs12', '-in', sAzurePFX, '-nokeys', '-passin', 'pass:']);
     
         if (!(blPrivKeyRes instanceof Error)) {
-            fs.chmod(sPrivateKeyPath, 0o0600, (err) => {
-                if (err) {
-                    console.error('SECURITY: Failed to change permissions on private key!');
-                    return;
-                }
-        
-                console.log('SUCCESS: The permissions for file [' + sPrivateKeyPath + '] have been changed!');
+            let sPrivKeyOutput = blPrivKeyRes.toString();
+            let rePrivateKeyPattern = /-----BEGIN PRIVATE KEY-----([\s\S]*?)-----END PRIVATE KEY-----/gm;
+            let aPrivKey = sPrivKeyOutput.match(rePrivateKeyPattern);
+
+            let writeStream = fs.createWriteStream(sPrivateKeyPath);
+            writeStream.on('error', err => console.error(err));
+            writeStream.on('finish', () => 
+            {
+                fs.chmod(sPrivateKeyPath, 0o0600, (err) => {
+                    if (err) {
+                        console.error('SECURITY: Failed to change permissions on private key!');
+                        return;
+                    }
+            
+                    console.log('SUCCESS: The permissions for file [' + sPrivateKeyPath + '] have been changed!');
+                });
             });
+            writeStream.write(aPrivKey.join("\n"), 'utf8');
+            writeStream.end();
         } else {
             console.log(blPrivKeyRes.stderr.toString('utf8'));
         }
     
         if (!(blCertificateRes instanceof Error)) {
-            fs.chmod(sCertificatePath, 0o0644, (err) => {
-                if (err) {
-                    console.error('SECURITY: Failed to change permissions on certificate file!');
-                    return;
-                }
-        
-                console.log('SUCCESS: The permissions for file [' + sCertificatePath + '] have been changed!');
+            let sCertificateOutput = blCertificateRes.toString();
+            let reCertificatePattern = /-----BEGIN CERTIFICATE-----([\s\S]*?)-----END CERTIFICATE-----/gm;
+            let aCertificate = sCertificateOutput.match(reCertificatePattern);
+
+            let writeStream = fs.createWriteStream(sCertificatePath);
+            writeStream.on('error', err => console.error(err));
+            writeStream.on('finish', () => 
+            {
+                fs.chmod(sCertificatePath, 0o0644, (err) => {
+                    if (err) {
+                        console.error('SECURITY: Failed to change permissions on certificate file!');
+                        return;
+                    }
+            
+                    console.log('SUCCESS: The permissions for file [' + sCertificatePath + '] have been changed!');
+                });
             });
+            writeStream.write(aCertificate.join("\n"), 'utf8');
+            writeStream.end();
         } else {
             console.log(blCertificateRes.stderr.toString('utf8'));
         }
