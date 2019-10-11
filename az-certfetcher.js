@@ -11,7 +11,7 @@ const pthExecHome = path.resolve(__dirname);
 
 var installPath = process.env.INSTALL_PATH.trim();
 var installName = process.env.INSTALL_NAME.trim();
-var sAzurePFX = installPath + path.sep + 'azure.' + installName + '.pfx';
+var sAzurePFX = installPath + path.sep + installName + '.azure.pfx';
 
 async function convertPFXtoPEM() {
     try {
@@ -72,7 +72,7 @@ async function convertPFXtoPEM() {
                     console.log('SUCCESS: The permissions for file [' + sCertificatePath + '] have been changed!');
                 });
             });
-            writeStream.write(aCertificate.join("\n"), 'utf8');
+            writeStream.write(aCertificate.reverse().join("\n"), 'utf8');
             writeStream.end();
         } else {
             console.log(blCertificateRes.stderr.toString('utf8'));
