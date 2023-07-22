@@ -1,7 +1,7 @@
 {
   "name": "az-certfetcher",
   "version": "1.0.0",
-  "description": "A utility for fetching App Service Certificates from the Azure Key Vault.",
+  "description": "A utility for fetching certificates from the Azure Key Vault.",
   "main": "az-certfetcher.js",
   "scripts": {
     "run": "node -r esm -r dotenv/config az-certfetcher.js"
@@ -9,12 +9,13 @@
   "author": "Daniel Resch",
   "license": "MIT",
   "dependencies": {
-    "@azure/identity": "^1.0.0-preview.5",
-    "@azure/keyvault-secrets": "^4.0.0-preview.7",
-    "await-spawn": "^3.0.0",
-    "dotenv": "^8.1.0",
+    "@azure/identity": "3.2.4",
+    "@azure/keyvault-certificates": "4.7.0",
+    "@types/node": "^20.4.3",
+    "await-spawn": "4.0.2",
+    "dotenv": "16.3.1",
     "esm": "^3.2.25",
-    "fs-extra": "^8.1.0"
+    "fs-extra": "11.1.1"
   },
   "repository": {
     "type": "git",

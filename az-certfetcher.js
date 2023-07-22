@@ -2,12 +2,13 @@ import path from 'path';
 import fs from 'fs-extra';
 import spawn from 'await-spawn';
 
-import { DefaultAzureCredential } from "@azure/identity";
-import { SecretsClient } from "@azure/keyvault-secrets";
+import { ManagedIdentityCredential } from '@azure/identity';
+import { CertificateClient } from '@azure/keyvault-certificates';
 
-const secretName = process.env.SECRET_NAME;
-const vaultName = process.env.KEYVAULT_NAME;
 const pthExecHome = path.resolve(__dirname);
+const vaultName = process.env.KEYVAULT_NAME;
+const certificateName = process.env.CERTIFICATE_NAME;
+const managedIdentityClientId = process.env.AZURE_CLIENT_ID;
 
 var installPath = process.env.INSTALL_PATH.trim();
 var installName = process.env.INSTALL_NAME.trim();
@@ -99,15 +100,15 @@ async function main() {
         installName = 'az-secret';
     }
 
-    const credential = new DefaultAzureCredential();
-    const url = `https://${vaultName}.vault.azure.net`;
-    const client = new SecretsClient(url, credential);
-    const latestSecret = await client.getSecret(secretName);
+    let url = `https://${vaultName}.vault.azure.net`;
+    let micCredentialHandler = new ManagedIdentityCredential(managedIdentityClientId);
+    let ccCertClientRes = new CertificateClient(url, micCredentialHandler);
+    let latestCert = (await ccCertClientRes.getCertificate(certificateName));
 
     let writeStream = fs.createWriteStream(sAzurePFX);
     writeStream.on('error', err => console.error(err));
     writeStream.on('finish', convertPFXtoPEM);
-    writeStream.write(latestSecret.value, 'base64');
+    writeStream.write(latestCert.value, 'base64');
     writeStream.end();
 }
   
