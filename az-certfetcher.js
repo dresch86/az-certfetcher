@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs-extra';
 import spawn from 'await-spawn';
 
+import { SecretClient } from "@azure/keyvault-secrets";
 import { ManagedIdentityCredential } from '@azure/identity';
-import { CertificateClient } from '@azure/keyvault-certificates';
 
 const pthExecHome = path.resolve(__dirname);
 const vaultName = process.env.KEYVAULT_NAME;
@@ -102,8 +102,8 @@ async function main() {
 
     let url = `https://${vaultName}.vault.azure.net`;
     let micCredentialHandler = new ManagedIdentityCredential(managedIdentityClientId);
-    let ccCertClientRes = new CertificateClient(url, micCredentialHandler);
-    let latestCert = (await ccCertClientRes.getCertificate(certificateName));
+    let ccCertClientRes = new SecretClient(url, micCredentialHandler);
+    let latestCert = (await ccCertClientRes.getSecret(certificateName));
 
     let writeStream = fs.createWriteStream(sAzurePFX);
     writeStream.on('error', err => console.error(err));
