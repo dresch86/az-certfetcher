@@ -125,10 +125,6 @@ async function main() {
         installPath = pthExecHome + path.sep + 'ssl';
     }
 
-    if (installName.length < 1) {
-        installName = 'az-secret';
-    }
-
     let url = `https://${vaultName}.vault.azure.net`;
     let micCredentialHandler = new ManagedIdentityCredential(managedIdentityClientId);
     let ccCertClientRes = new SecretClient(url, micCredentialHandler);
